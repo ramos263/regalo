@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libro de Amor</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Petit+Formal+Script&display=swap');
+           
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Petit Formal Script', cursive;
+            background: linear-gradient(to bottom, #87CEEB 0%, #98D8C8 50%, #90EE90 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Elementos del parque */
+        .park-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .tree {
+            position: absolute;
+            font-size: 80px;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .flower {
+            position: absolute;
+            font-size: 30px;
+            animation: sway 3s ease-in-out infinite;
+        }
+
+        @keyframes sway {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+
+        .cloud {
+            position: absolute;
+            color: white;
+            font-size: 50px;
+            animation: float linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes float {
+            from { transform: translateX(-100px); }
+            to { transform: translateX(100vw); }
+        }
+
+        .bird {
+            position: absolute;
+            font-size: 25px;
+            animation: fly linear infinite;
+        }
+
+        @keyframes fly {
+            from { transform: translateX(-50px) translateY(0); }
+            50% { transform: translateX(50vw) translateY(-20px); }
+            to { transform: translateX(100vw) translateY(0); }
+        }
+
+        /* Contenedor del libro */
+        .book-container {
+            position: relative;
+            width: 600px;
+            height: 450px;
+            perspective: 1500px;
+            z-index: 10;
+        }
+
+        /* Optimización para móviles */
+        @media (max-width: 768px) {
+            .book-container {
+                width: 95vw;
+                height: 70vh;
+                max-width: 400px;
+            }
+
+            .book-wrapper {
+                width: 200px;
+                height: 300px;
+            }
+
+            .book-title {
+                font-size: 24px;
+                margin: 10px;
+            }
+
+            .book-heart-center {
+                font-size: 40px;
+                right: -10px;
+            }
+
+            .cat-corner {
+                font-size: 40px;
+            }
+
+            .cat-top-left, .cat-top-right {
+                top: -20px;
+            }
+
+            .cat-top-left {
+                left: -20px;
+            }
+
+            .cat-top-right {
+                right: -20px;
+            }
+
+            .cat-bottom-left, .cat-bottom-right {
+                bottom: -20px;
+            }
+
+            .cat-bottom-left {
+                left: -20px;
+            }
+
+            .cat-bottom-right {
+                right: -20px;
+            }
+
+            .book-page {
+                padding: 15px;
+            }
+
+            .page-title {
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+
+            .page-text {
+                font-size: 14px;
+                line-height: 1.5;
+                margin-bottom: 10px;
+            }
+
+            .photo-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .photo {
+                height: 120px;
+            }
+
+            .signature {
+                font-size: 16px;
+                margin-top: 10px;
+            }
+
+            .cat-open {
+                font-size: 45px;
+            }
+
+            .cat-open-tl, .cat-open-tr {
+                top: -25px;
+            }
+
+            .cat-open-tl {
+                left: -25px;
+            }
+
+            .cat-open-tr {
+                right: -25px;
+            }
+
+            .cat-open-bl, .cat-open-br {
+                bottom: -25px;
+            }
+
+            .cat-open-bl {
+                left: -25px;
+            }
+
+            .cat-open-br {
+                right: -25px;
+            }
+
+            .nav-controls {
+                bottom: 10px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+
+            .close-btn {
+                font-size: 25px;
+                top: 5px;
+                right: 5px;
+            }
+
+            .page-number {
+                font-size: 12px;
+                bottom: 5px;
+            }
+
+            .tree {
+                font-size: 50px;
+            }
+
+            .flower {
+                font-size: 20px;
+            }
+
+            .cloud {
+                font-size: 35px;
+            }
+
+            .bird {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .book-container {
+                height: 65vh;
+            }
+
+            .book-wrapper {
+                width: 180px;
+                height: 280px;
+            }
+
+            .book-title {
+                font-size: 20px;
+            }
+
+            .book-heart-center {
+                font-size: 35px;
+            }
+
+            .page-title {
+                font-size: 18px;
+            }
+
+            .page-text {
+                font-size: 13px;
+            }
+
+            .nav-btn {
+                padding: 6px 12px;
+                font-size: 13px;
+            }
+        }
+
+        /* Libro cerrado */
+        .book-closed {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transition: opacity 0.5s;
+        }
+
+        .book-closed.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .book-wrapper {
+            position: relative;
+            width: 320px;
+            height: 450px;
+            margin: 0 auto;
+        }
+
+        .book-cover {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f3f3f3 0%, #c300ff 100%);
+            border: 3px solid #1a84ef;
+            border-radius: 0 15px 15px 0;
+            box-shadow: -10px 10px 30px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .book-spine {
+            position: absolute;
+            left: -25px;
+            width: 25px;
+            height: 100%;
+            background: linear-gradient(to right, #2b28dd 0%, #db26ff 100%);
+            border-radius: 5px 0 0 5px;
+        }
+
+        .book-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 36px;
+            color: #f9fff9;
+            text-align: center;
+            margin: 20px;
+            text-shadow: 2px 2px 4px rgba(128, 15, 249, 0.5);
+        }
+
+        /* Corazón en el centro donde se abre */
+        .book-heart-center {
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 25px;
+            color: #ee00ff;
+            text-shadow: 0 0 20px rgba(183, 0, 255, 0.8);
+            animation: heartbeat 1.5s ease-in-out infinite;
+            cursor: pointer;
+            z-index: 5;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+            border-radius: 10%;
+            padding: 5px;
+            transition: transform 0.3s;
+        }
+
+        .book-heart-center:hover {
+            transform: translateY(-50%) scale(1.2);
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: translateY(-50%) scale(1); }
+            50% { transform: translateY(-50%) scale(1.15); }
+        }
+
+        /* Gatos en las esquinas del libro cerrado */
+        .cat-corner {
+            position: absolute;
+            font-size: 60px;
+            z-index: 5;
+            animation: catWiggle 2s ease-in-out infinite;
+        }
+
+        .cat-top-left {
+            top: -30px;
+            left: -30px;
+            transform: rotate(-20deg);
+        }
+
+        .cat-top-right {
+            top: -30px;
+            right: -30px;
+            transform: rotate(20deg);
+        }
+
+        .cat-bottom-left {
+            bottom: -30px;
+            left: -30px;
+            transform: rotate(20deg);
+        }
+
+        .cat-bottom-right {
+            bottom: -30px;
+            right: -30px;
+            transform: rotate(-20deg);
+        }
+
+        @keyframes catWiggle {
+            0%, 100% { transform: rotate(-20deg) translateY(0); }
+            50% { transform: rotate(-20deg) translateY(-5px); }
+        }
+
+        /* Libro abierto */
+        .book-open {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.8s;
+            pointer-events: none;
+        }
+
+        .book-open.active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: all;
+        }
+
+        .book-page {
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to bottom, #e185ff 0%, #7af7fb 100%);
+            border: 3px solid #00d0ff;
+            padding: 30px;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgb(243, 240, 240);
+            position: relative;
+        }
+
+        .book-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 28px,
+                    rgba(139, 111, 71, 0.08) 28px
+                    rgba(139, 111, 71, 0.08) 29px
+                );
+            pointer-events: none;
+        }
+
+        .page-left {
+            border-radius: 15px 0 0 15px;
+            border-right: 1px dashed #00ff77e3;
+        }
+
+        .page-right {
+            border-radius: 0 15px 15px 0;
+        }
+
+        .page-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 26px;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgb(0, 0, 0);
+        }
+
+        .page-text {
+            font-size: 20px;
+            color: #000000;
+            line-height: 1.7;
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin: 12px 0;
+        }
+
+        .photo {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border: 3px solid #21f0ff;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            filter: sepia(20%) contrast(90%);
+        }
+
+        .signature {
+            text-align: center;
+            font-family: 'Dancing Script', cursive;
+            font-size: 20px;
+            color: #1f140d;
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        .page-number {
+            position: absolute;
+            bottom: 10px;
+            font-size: 14px;
+            color: #7700ff;
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .page-left .page-number {
+            left: 20px;
+        }
+
+        .page-right .page-number {
+            right: 20px;
+        }
+
+        /* Controles de navegación */
+        .nav-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        .nav-btn {
+            background: #ff0077;
+            color: #ffffff;
+            border: 2px solid #ff1d3b;
+            padding: 5px 8px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+            box-shadow: 0 3px 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-btn:hover {
+            background: #a0fff9;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 30px;
+            color: #ffffff;
+            cursor: pointer;
+            background: none;
+            border: none;
+            z-index: 10;
+            transition: transform 0.3s;
+        }
+
+        .close-btn:hover {
+            transform: rotate(90deg);
+        }
+
+        /* Gatos en las esquinas del libro abierto */
+        .cat-open {
+            position: absolute;
+            font-size: 70px;
+            z-index: 15;
+            animation: catBounce 2s ease-in-out infinite;
+        }
+
+        .cat-open-tl {
+            top: -35px;
+            left: -35px;
+        }
+
+        .cat-open-tr {
+            top: -35px;
+            right: -35px;
+        }
+
+        .cat-open-bl {
+            bottom: -35px;
+            left: -35px;
+        }
+
+        .cat-open-br {
+            bottom: -35px;
+            right: -35px;
+        }
+
+        @keyframes catBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Elementos del parque -->
+    <div class="park-elements">
+        <div class="tree" style="bottom: 10%; left: 5%;">🌳</div>
+        <div class="tree" style="bottom: 10%; right: 5%;">🌲</div>
+        <div class="flower" style="bottom: 15%; left: 15%; animation-delay: 0s;">🌸</div>
+        <div class="flower" style="bottom: 12%; left: 25%; animation-delay: 1s;">🌺</div>
+        <div class="flower" style="bottom: 18%; right: 20%; animation-delay: 0.5s;">🌻</div>
+        <div class="flower" style="bottom: 14%; right: 10%; animation-delay: 1.5s;">🌷</div>
+        <div class="cloud" style="top: 10%; animation-duration: 30s;">☁️</div>
+        <div class="cloud" style="top: 20%; animation-duration: 40s; animation-delay: 5s;">☁️</div>
+        <div class="bird" style="top: 15%; animation-duration: 25s;">🐦</div>
+    </div>
+
+    <!-- Libro -->
+    <div class="book-container">
+        <!-- Libro cerrado -->
+        <div class="book-closed" id="bookClosed">
+            <div class="book-wrapper">
+                <div class="book-cover">
+                    <div class="book-spine"></div>
+                    <div class="book-title">un libro de recuerdos<br></div>
+                    
+                    <!-- Gatos en las esquinas -->
+                    <div class="cat-corner cat-top-left">😺</div>
+                    <div class="cat-corner cat-top-right">😸</div>
+                    <div class="cat-corner cat-bottom-left">😻</div>
+                    <div class="cat-corner cat-bottom-right">😽</div>
+                </div>
+                
+                <!-- Corazón en el centro donde se abre -->
+                <div class="book-heart-center" onclick="openBook()">❤️</div>
+            </div>
+        </div>
+
+        <!-- Libro abierto -->
+        <div class="book-open" id="bookOpen">
+            <button class="close-btn" onclick="closeBook()">✕</button>
+            
+            <!-- Gatos en las esquinas del libro abierto -->
+            <div class="cat-open cat-open-tl">😺</div>
+            <div class="cat-open cat-open-tr">😸</div>
+            <div class="cat-open cat-open-bl">😻</div>
+            <div class="cat-open cat-open-br">😽</div>
+
+            <!-- Página izquierda -->
+            <div class="book-page page-left">
+                <div class="page-content" id="pageLeft">
+                    <!-- Contenido dinámico -->
+                </div>
+                <div class="page-number" id="pageNumLeft"></div>
+            </div>
+
+            <!-- Página derecha -->
+            <div class="book-page page-right">
+                <div class="page-content" id="pageRight">
+                    <!-- Contenido dinámico -->
+                </div>
+                <div class="page-number" id="pageNumRight"></div>
+            </div>
+
+            <!-- Controles de navegación -->
+            <div class="nav-controls">
+                <button class="nav-btn" id="prevBtn" onclick="previousPage()">← Anterior </button>
+                <button class="nav-btn" id="nextBtn" onclick="nextPage()">Siguiente →</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+          
+        let currentPage = 0;
+        const totalPages = 5;
+
+        const pages = [
+            
+            {
+                left: `
+                    <h2 class="page-title">Capítulo 1: El Comienzo de nuestra relacion</h2>
+                    <p class="page-text">
+                   la verdad recuerdo que nuestra relación empezó rara jaja aunque al principio me rechazaste al tiempo te enamoraste de mi la verdad 
+                   aunque sea raro nuestro comienzo se me hace lindo ya que por eso hemos sido mas unido y me gusta que podamos ser tu y yo siempre 
+                    </p>
+                    <p class="page-text">
+                       
+                    </p>
+                `,
+                right: `
+                    <h2 class="page-title"></h2>
+                    <div class="photo-grid">
+                        <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400&h=300&fit=crop" alt="Foto 1" class="photo">
+                        <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400&h=300&fit=crop" alt="Foto 2" class="photo">
+                    </div>
+                    <p class="page-text">
+                       la verdad recuerdo que no fui un buen chico pero con el pasar del tiempo me enamore de ti y me di cuenta que sin ti los días son mas
+                       apagados y mas tristes, te amo mi niña y siempre te amare gracias por estar aquí y quedarte aunque tengamos problemas
+                    </p>
+                `
+            },
+            // Página 3-4
+            {
+                left: `
+                    <h2 class="page-title">Capítulo 2: como juntos hemos crecido</h2>
+                    <p class="page-text">
+                        bueno desde hace dos años hemos tenido muchos problemas pero siento que hemos avanzado ya que nos conocemos hemos dejado de 
+                   hacer cosas que nos hacen mal y la verdad me siento muy orgulloso de como hemos avanzado aunque aveces me molesta tus acciones 
+                   la verdad me siento orgulloso de tus logros
+                    </p>
+                    <p class="page-text">
+                     si te soy sincero me siento feliz por tenerte en mi vida y aunque no lo creas me siento feliz de que ya no tomes, si te soy sincero me siento muy 
+                     feliz por la chica en que te has convertido en estos dos años espero que siempre te vaya bien en la vida y te deseo lo mejor mi niña hermosa
+                    </p>
+                `,
+                right: `
+                    <h2 class="page-title"></h2>
+                    <div class="photo-grid">
+                        
+                      <img src="imag/WhatsApp Image 2025-10-25 at 12.25.14 PM.jpeg" alt="Foto 4" class="photo">
+                        
+                    </div>
+                    <p class="page-text">
+                      se que tal vez pido mucho pero me gustaria que pudieramos estar juntos por mucho tiempo mas bb 
+                    </p>
+                `
+            },
+            // Página 5-6
+            {
+                left: `
+                    <h2 class="page-title">nustros planes</h2>
+                    <p class="page-text">
+                      la verdad no se si quieres o te gustaria lo mismo pero, me gustaria que pudieramos tener una familia unida
+                      me gustaria que pudieramos ser una familia feliz y unida donde estemos seguro donde no hayan mentiras ni engaños
+                      se que puede ser dificil pero me gustaria que nos esforzaramos 
+                    </p>
+                    <p class="page-text">
+                        te amo y me gustaria llegar a viejitos contigo aunque tengamos mil problemas me gustaria que fueramos tu y yo siempre
+                    </p>
+                `,
+                right: `
+                    <h2 class="page-title">nuestros momentos mas especiales</h2>
+                    <p class="page-text">
+                       te recuerdas cuando dormimos en llamada la primera vez bb? la verdad a mi me hizo feliz ese dia ya que senti que estabas cerca de mi
+                       tambien recuerdo cuando vimos cyber punk jaja fue chido me gustaria poder volver a ver un anime contigo pero me gustaria que esta vez
+                       fuera en persona
+                    </p>
+                    <p class="page-text">
+                     me gustaria estar contigo siempre
+                    </p>
+                `
+            },
+            // Página 7-8
+            {
+                left: `
+                    <h2 class="page-title">nuestras caidas</h2>
+                    <p class="page-text">
+                       la verdad hemos tenido muchos problemas y muchos rompimientos pero aun asi te amo y quiero estar contigo
+                       me gustaria que empezaramos a ser mas unidos y poder brillar juntos como lo haria una pareja la verdad me gustas
+                       mucho y no me gustaria que llegaramos a terminar
+                    </p>
+                    <p class="page-text">
+                      te amo
+                    </p>
+                `,
+                right: `
+                    <h2 class="page-title">Para Siempre</h2>
+                    <p class="page-text">
+                      mi niña si te soy sincero me gustaria estar siempre contigo tanto en las buenas como en las malas
+                      me gustariamos que fueramos tu y yo por siempre
+                    </p>
+                    <p class="page-text">
+                        me encantas
+                    </p>
+                `
+            },
+            // Página 9-10
+            {
+                left: `
+                    <h2 class="page-title">Capítulo V: Nuestro Amor Eterno</h2>
+                    <p class="page-text">
+                       bueno mi niña solo queria recordarte que eres una persona muy importante para mi y aunque hayan problemas te sigo 
+                       amando como el primer dia la verdad me gustaria que mejoraramos porque en verdad quiero tener algo lindo y duradero contigo
+                       me encantas y me gustas tal y como eres mi niña
+                    </p>
+                    <p class="page-text">
+                      te amo de a qui al infinito y mucho mas
+                    </p>
+                `,
+                right: `
+                    <h2 class="page-title">Te Amo</h2>
+                    <p class="page-text">
+                      weno bb esta mañana me dijiste que si tenia a otra y estaba ocupado con esa persona jaja, pero la verdad no tengo a otra y estaba ocupado
+                      haciendo el libro y la carta espero que te hayan gustado mi niña hermosa 
+                    </p>
+                    <p class="page-text">
+                        <h2>¿te gustaria ser mi novia?</h2>
+                    </p>
+                    
+                `
+            }
+        ];
+
+        function updatePages() {
+            const pageLeft = document.getElementById('pageLeft');
+            const pageRight = document.getElementById('pageRight');
+            const pageNumLeft = document.getElementById('pageNumLeft');
+            const pageNumRight = document.getElementById('pageNumRight');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            pageLeft.innerHTML = pages[currentPage].left;
+            pageRight.innerHTML = pages[currentPage].right;
+            
+            pageNumLeft.textContent = `- ${currentPage * 2 + 1} -`;
+            pageNumRight.textContent = `- ${currentPage * 2 + 2} -`;
+
+            prevBtn.disabled = currentPage === 0;
+            nextBtn.disabled = currentPage === totalPages - 1;
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages - 1) {
+                currentPage++;
+                updatePages();
+            }
+        } 
+
+        function previousPage() {
+            if (currentPage > 0) {
+                currentPage--;
+                updatePages();
+            }
+        }
+
+        function openBook() {
+            document.getElementById('bookClosed').classList.add('hidden');
+            setTimeout(() => {
+                document.getElementById('bookOpen').classList.add('active');
+                currentPage = 0;
+                updatePages();
+            }, 300);
+        }
+
+        function closeBook() {
+            document.getElementById('bookOpen').classList.remove('active');
+            setTimeout(() => {
+                document.getElementById('bookClosed').classList.remove('hidden');
+            }, 500);
+        }
+        
+   </script>
+ <audio id="musica" loop  src="audio/SLANDER - Love Is Gone ft. Dylan Matthew (Acoustic) - SLANDER.mp3" type="mp3" ></audio>
+ </body>
+</html>
